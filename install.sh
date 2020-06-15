@@ -2,6 +2,7 @@
 
 git clone https://github.com/popovicirobert/cf-app.git
 
+sudo -s
 apt-get install python3
 apt-get install python3-pip
 pip install requests
@@ -15,5 +16,4 @@ chmod +x checker.sh
 chmod +x make_main.sh
 
 ln -s $PWD/cf-app.sh //usr/local/bin/cf-app
-
-
+cd ..
