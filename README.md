@@ -1,1 +1,1 @@
-This is a command line application that helps you solving problems on codeforces
+This is a command line application that helps you solve problems on codeforces

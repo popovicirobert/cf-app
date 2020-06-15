@@ -4,7 +4,6 @@ from selenium.webdriver.firefox.options import Options
 from time import sleep
 import clipboard
 import os, sys
-from shutil import copyfile
 import subprocess, shlex
 from selenium.webdriver.support.ui import Select
 from pyvirtualdisplay import Display
@@ -37,7 +36,6 @@ def login(driver):
 	
 	username = get_username()
 	password = get_password()
-	# username si password pot fi setate si manual
 	# username = ''
 	# password = ''
 
