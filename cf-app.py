@@ -14,8 +14,8 @@ SITE_URL = 'https://codeforces.com'
 driver = ''
 
 def get_driver():
-	#options = Options()
 	print("Initializing driver...")
+	#return webdriver.Chrome()
 	return webdriver.Firefox()
 
 def get_username():
