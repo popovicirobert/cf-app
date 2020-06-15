@@ -1,13 +1,13 @@
-import requests # verifica ca pagina exista
+import requests
 from selenium import webdriver 
 from selenium.webdriver.firefox.options import Options 
 from time import sleep
-import clipboard # copy, paste din clipboard
+import clipboard
 import os, sys
-from shutil import copyfile # pentru a copia un fisier in altul
+from shutil import copyfile
 import subprocess, shlex
 from selenium.webdriver.support.ui import Select
-from pyvirtualdisplay import Display # face fereastra sa dispara
+from pyvirtualdisplay import Display
 
 PROJECT_PATH = os.path.dirname(__file__)
 CURRENT_PATH = sys.argv[1]
