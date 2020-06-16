@@ -30,22 +30,23 @@ def get_password():
 	fd.close()
 	return password
 
-def login(driver):
+def login():
 	print("Loging in...")
-	driver.get('http://codeforces.com/enter?back=%2F')
 	
-	username = get_username()
-	password = get_password()
-	# username = ''
-	# password = ''
+	if check_if_page_exists('https://codeforces.com/enter?back=%2F'):	
 
-	driver.find_element_by_name('handleOrEmail').send_keys(username)
-	driver.find_element_by_name('password').send_keys(password)
+		username = get_username()
+		password = get_password()
+		# username = ''
+		# password = ''
 
-	driver.find_element_by_name('remember').click()
-	driver.find_element_by_class_name('submit').click()
+		driver.find_element_by_name('handleOrEmail').send_keys(username)
+		driver.find_element_by_name('password').send_keys(password)
 
-	sleep(5)
+		driver.find_element_by_name('remember').click()
+		driver.find_element_by_class_name('submit').click()
+
+		sleep(5)
 
 def submit(contest_url, contest_id, task_id):
 	print(f'Submiting task {task_id}...')
@@ -167,12 +168,12 @@ def check(contest_id, task_id):
 
 def main():
 	display = Display(visible = 0, size = (1360, 760))
-	display.start()
+	#display.start()
 	
 	global driver
 	driver = get_driver()
 	driver.get(SITE_URL)
-	login(driver)
+	login()
 
 	print('')
 
@@ -200,7 +201,7 @@ def main():
 		print('')
 
 	driver.quit()
-	display.stop()
+	#display.stop()
 	os.remove(CURRENT_PATH + '/geckodriver.log')
 
 
