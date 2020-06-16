@@ -168,7 +168,7 @@ def check(contest_id, task_id):
 
 def main():
 	display = Display(visible = 0, size = (1360, 760))
-	#display.start()
+	display.start()
 	
 	global driver
 	driver = get_driver()
@@ -201,7 +201,7 @@ def main():
 		print('')
 
 	driver.quit()
-	#display.stop()
+	display.stop()
 	os.remove(CURRENT_PATH + '/geckodriver.log')
 
 
