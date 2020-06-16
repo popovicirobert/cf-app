@@ -1,13 +1,26 @@
-import requests
-from selenium import webdriver 
-from selenium.webdriver.firefox.options import Options 
-from time import sleep
-import clipboard
-import os, sys
-import subprocess, shlex
-from selenium.webdriver.support.ui import Select
-from pyvirtualdisplay import Display
+try:
+	import requests
+	from selenium import webdriver 
+	from selenium.webdriver.firefox.options import Options 
+	from time import sleep
+	import clipboard
+	import os, sys
+	import subprocess, shlex
+	from selenium.webdriver.support.ui import Select
+	from pyvirtualdisplay import Display
+except:
+	import install_requirements
 
+	import requests
+	from selenium import webdriver 
+	from selenium.webdriver.firefox.options import Options 
+	from time import sleep
+	import clipboard
+	import os, sys
+	import subprocess, shlex
+	from selenium.webdriver.support.ui import Select
+	from pyvirtualdisplay import Display
+	
 PROJECT_PATH = os.path.dirname(__file__)
 CURRENT_PATH = sys.argv[1]
 SITE_URL = 'https://codeforces.com'
