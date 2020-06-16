@@ -81,7 +81,7 @@ def check_if_page_exists(page_url):
 		return True
 	return False
 
-def get_number_of_tasks(contest_url, contest_id):
+def get_number_of_tasks(contest_url, contest_path, contest_id):
 	big_letters = map(chr, range(ord('A'), ord('Z') + 1))
 	task_number = 0
 
@@ -90,6 +90,7 @@ def get_number_of_tasks(contest_url, contest_id):
 
 		if check_if_page_exists(task_url) == True:
 			task_number += 1
+			prepare_task(contest_url, contest_path, contest_id, task_id)
 		else:
 			break
 
@@ -141,16 +142,16 @@ def prepare_contest(contest_id):
 	print('Preparing contest...')
 	contest_url = get_contest_url(contest_id)
 
+	if check_if_page_exists(contest_url) == False:
+		print('Invalid contest!')
+		return ['', '']
+
 	contest_path = get_contest_path(contest_id)
 	make_directory(contest_path)
 
-	number_of_tasks = get_number_of_tasks(contest_url, contest_id) 
-	big_letters = map(chr, range(ord('A'), ord('A') + number_of_tasks))
+	number_of_tasks = get_number_of_tasks(contest_url, contest_path, contest_id) 
 
-	for task_id in big_letters:
-		prepare_task(contest_url, contest_path, contest_id, task_id)
-
-	return contest_url
+	return [contest_url, number_of_tasks]
 
 def contest_exists(contest_id):
 	if contest_id == '':
@@ -165,6 +166,13 @@ def check(contest_id, task_id):
 
 	subprocess.call([PROJECT_PATH + '/checker.sh', task_id, task_path])
 
+def valid_task(task_id, number_of_tasks):
+	task_number = int(ord(task_id) - ord('A') + 1)
+	if task_number <= number_of_tasks and task_number > 0:
+		return True
+
+	print('Invalid task!')
+	return False
 
 def main():
 	display = Display(visible = 0, size = (1360, 760))
@@ -175,30 +183,31 @@ def main():
 	driver.get(SITE_URL)
 	login()
 
-	print('')
 
 	contest_url = ''
 	contest_id = ''
+	number_of_tasks = int(0)
 
 	while True:
+		os.system('clear')
 		command = input('Enter: ').split()
 
 		if command[0] == 'quit':
 			break
 
 		elif command[0] == 'submit':
-			if contest_exists(contest_id):
+			if contest_exists(contest_id) and valid_task(command[1], number_of_tasks):
 				submit(contest_url, contest_id, command[1])	
 		
 		elif command[0] == 'contest':
 			contest_id = command[1]
-			contest_url = prepare_contest(command[1])
+			contest_url, number_of_tasks = prepare_contest(command[1])
 
 		elif command[0] == 'check':
-			if contest_exists(contest_id):
+			if contest_exists(contest_id) and valid_task(command[1], number_of_tasks):
 				check(contest_id, command[1])
+				input('Type anything to continue...')
 		
-		print('')
 
 	driver.quit()
 	display.stop()

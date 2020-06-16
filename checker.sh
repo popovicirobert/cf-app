@@ -1,5 +1,9 @@
 #!/bin/bash
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+WHITE='\033[1;37m'
+
 task_id=$1
 file_path=$2
 
@@ -19,7 +23,7 @@ if [ "$?" -ne "0" ]; then
 	echo "Compilation failed"
 	exit 1
 else
-	echo "Compilation successfull"
+	echo -e "Compilation successfull\n"
 fi
 
 echo "Checking tests..."
@@ -35,12 +39,12 @@ while [ -f $tests_path"/input$i.txt" ]; do
 	timeout 2s $main_exe
 
 	if [ "$?" -ne "0" ]; then
-		echo "Test $i TLE"
+		echo -e "Test $i ${RED}TLE${WHITE}\n"
 		exit 1
 	elif diff -qBZ $out_file $output >/dev/null; then
-		echo "Test $i OK"
+		echo -e "Test $i ${GREEN}OK${WHITE}"
 	else
-		echo "Test $i WA"
+		echo -e "Test $i ${RED}WA${WHITE}\n"
 		exit 1
 	fi
 
@@ -48,7 +52,8 @@ while [ -f $tests_path"/input$i.txt" ]; do
 
 done
 
-echo "Pretests passed"
+echo ""
+#echo -e "${GREEN}Pretests passed${WHITE}\n"
 
 rm $main_exe
 cd $current_path
