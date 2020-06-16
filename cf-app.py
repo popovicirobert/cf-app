@@ -1,26 +1,13 @@
-try:
-	import requests
-	from selenium import webdriver 
-	from selenium.webdriver.firefox.options import Options 
-	from time import sleep
-	import clipboard
-	import os, sys
-	import subprocess, shlex
-	from selenium.webdriver.support.ui import Select
-	from pyvirtualdisplay import Display
-except:
-	import install_requirements
+import requests
+from selenium import webdriver 
+from selenium.webdriver.firefox.options import Options 
+from time import sleep
+import clipboard
+import os, sys
+import subprocess, shlex
+from selenium.webdriver.support.ui import Select
+from pyvirtualdisplay import Display
 
-	import requests
-	from selenium import webdriver 
-	from selenium.webdriver.firefox.options import Options 
-	from time import sleep
-	import clipboard
-	import os, sys
-	import subprocess, shlex
-	from selenium.webdriver.support.ui import Select
-	from pyvirtualdisplay import Display
-	
 PROJECT_PATH = os.path.dirname(__file__)
 CURRENT_PATH = sys.argv[1]
 SITE_URL = 'https://codeforces.com'
@@ -187,6 +174,8 @@ def main():
 	driver.get(SITE_URL)
 	login(driver)
 
+	print('')
+
 	contest_url = ''
 	contest_id = ''
 
@@ -208,7 +197,7 @@ def main():
 			if contest_exists(contest_id):
 				check(contest_id, command[1])
 		
-		print('\n')
+		print('')
 
 	driver.quit()
 	display.stop()

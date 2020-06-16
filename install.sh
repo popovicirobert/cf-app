@@ -5,10 +5,10 @@ git clone https://github.com/popovicirobert/cf-app.git
 sudo -s
 apt-get install python3
 apt-get install python3-pip
-#pip install requests
-#pip install selenium
-#pip install clipboard
-#pip install pyvirtualdisplay
+pip install requests
+pip install selenium
+pip install clipboard
+pip install pyvirtualdisplay
 
 cd cf-app
 chmod +x cf-app.sh
