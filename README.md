@@ -3,6 +3,6 @@
 
 
 
-chmod +x install.sh
+**chmod +x install.sh**
 
-source install.sh
+**source install.sh**
