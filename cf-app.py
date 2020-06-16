@@ -201,7 +201,7 @@ def main():
 
 	driver.quit()
 	display.stop()
-	os.remove(sys.argv[1] + '/geckodriver.log')
+	os.remove(CURRENT_PATH + '/geckodriver.log')
 
 
 if __name__ == '__main__':
