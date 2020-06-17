@@ -61,7 +61,7 @@ def login():
 
 def submit(contest_url, contest_id, task_id):
 	print_cf_app()
-	print(f'Submiting task {task_id}...')
+	print(f'Submitting task {task_id}...')
 	task_url = get_task_url(contest_url, task_id)
 	source_path = get_task_path(contest_id, task_id) + '/main.cpp'
 
@@ -169,6 +169,13 @@ def prepare_task(contest_url, contest_path, contest_id, task_id):
 	os.system('touch ' + task_path + '/' + task_id + '.out')
 
 
+def something_wrong(message):
+	print_cf_app()
+	print(message)
+	print_cf_app()
+	input('Type anything to continue...')
+
+
 def prepare_contest(contest_id):
 	print('')
 	print_cf_app()
@@ -176,8 +183,7 @@ def prepare_contest(contest_id):
 	contest_url = get_contest_url(contest_id)
 
 	if check_if_page_exists(contest_url) == False:
-		print_cf_app()
-		print('Invalid contest!')
+		something_wrong('Invalid contest!')
 		return ['', '']
 
 	contest_path = get_contest_path(contest_id)
@@ -189,10 +195,7 @@ def prepare_contest(contest_id):
 
 def contest_exists(contest_id):
 	if contest_id == '':
-		print_cf_app()
-		print('Choose contest first!')
-		print_cf_app()
-		input('Type anything to continue...')
+		something_wrong('Choose contest first')
 		return False
 
 	return True
@@ -208,11 +211,7 @@ def valid_task(task_id, number_of_tasks):
 	if task_number <= number_of_tasks and task_number > 0:
 		return True
 
-	print_cf_app()
-	print('Invalid task!')
-	print_cf_app()
-	input('Type anything to continue...')
-
+	something_wrong('Invalid task!')	
 	return False
 
 def main():
@@ -255,9 +254,7 @@ def main():
 				input('Type anything to continue...')
 
 		else:
-			print_cf_app()
-			input('Invalid command!\n[cf-app] Type anything to continue...')
-
+			something_wrong('Invalid command!')	
 		
 
 	driver.quit()
