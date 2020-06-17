@@ -166,9 +166,9 @@ def prepare_tests(task_url, task_path, task_id):
 		print_cf_app()
 
 		if test_count == len(tests):
-			print(f'Downloading test {test_id + 1} / {number_of_tests}...')
+			print(f'Downloading test {test_id + 1} / {number_of_tests}')
 		else:
-			print(f'Downloading test {test_id + 1} / {number_of_tests}...', end = '\r')
+			print(f'Downloading test {test_id + 1} / {number_of_tests}', end = '\r')
 
 
 def move_up(number_of_lines):
