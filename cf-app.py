@@ -18,6 +18,7 @@ class Colors:
 	BLUE = '\033[0;34m' 
 	RED = '\033[0;31m'
 	WHITE = '\033[0;37m'
+	GREEN = '\033[0;32m'
 
 def print_cf_app():
 	print('[' + Colors.YELLOW + 'cf' + Colors.BLUE + '-' + Colors.RED + 'app' + Colors.WHITE + ']', end = ' ')
@@ -59,9 +60,30 @@ def login():
 
 		sleep(5)
 
+
+def get_judge_verdict(task_id):
+
+	while True:
+		subm_elem = driver.find_element_by_xpath('/html/body/div[6]/div[4]/div[2]/div[2]/div[6]/table/tbody/tr[2]/td[6]')
+		
+		print_cf_app()
+			
+		if subm_elem.get_attribute('waiting') == 'false':
+			if subm_elem.text == 'Accepted':
+				print(f'Submitting task {task_id}: ' + Colors.GREEN + subm_elem.text + Colors.WHITE + ' ' * 20)
+			else:
+				print(f'Submitting task {task_id}: ' + Colors.RED + subm_elem.text + Colors.WHITE + ' ' * 20)
+			break
+		else:
+			print(f'Submitting task {task_id}: ' + subm_elem.text, end = '\r')
+			
+	print_cf_app()
+	input("Type anything to continue...")
+
 def submit(contest_url, contest_id, task_id):
 	print_cf_app()
-	print(f'Submitting task {task_id}...')
+	print(f'Submitting task {task_id}:', end = '\r')
+
 	task_url = get_task_url(contest_url, task_id)
 	source_path = get_task_path(contest_id, task_id) + '/main.cpp'
 
@@ -70,6 +92,10 @@ def submit(contest_url, contest_id, task_id):
 	select.select_by_index(4)
 	driver.find_element_by_name('sourceFile').send_keys(source_path)
 	driver.find_element_by_class_name('submit').click()
+
+	sleep(5)
+
+	get_judge_verdict(task_id)
 
 def get_contest_url(contest_id):
 	return SITE_URL + '/contest/' + contest_id
