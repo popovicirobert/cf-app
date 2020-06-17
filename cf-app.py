@@ -190,7 +190,9 @@ def prepare_contest(contest_id):
 def contest_exists(contest_id):
 	if contest_id == '':
 		print_cf_app()
-		input('Choose contest first!\n[cf-app] Type anything to continue...')
+		print('Choose contest first!')
+		print_cf_app()
+		input('Type anything to continue...')
 		return False
 
 	return True
