@@ -13,8 +13,18 @@ CURRENT_PATH = sys.argv[1]
 SITE_URL = 'https://codeforces.com'
 driver = ''
 
+class Colors:
+	YELLOW = '\033[0;93m'
+	BLUE = '\033[0;34m' 
+	RED = '\033[0;31m'
+	WHITE = '\033[0;37m'
+
+def print_cf_app():
+	print('[' + Colors.YELLOW + 'cf' + Colors.BLUE + '-' + Colors.RED + 'app' + Colors.WHITE + ']', end = ' ')
+
 def get_driver():
-	print("Initializing driver...")
+	print_cf_app()
+	print('Initializing driver...')
 	#return webdriver.Chrome()
 	return webdriver.Firefox()
 
@@ -31,7 +41,8 @@ def get_password():
 	return password
 
 def login():
-	print("Loging in...")
+	print_cf_app()
+	print('Loging in...')
 	
 	if check_if_page_exists('https://codeforces.com/enter?back=%2F'):	
 
@@ -49,6 +60,7 @@ def login():
 		sleep(5)
 
 def submit(contest_url, contest_id, task_id):
+	print_cf_app()
 	print(f'Submiting task {task_id}...')
 	task_url = get_task_url(contest_url, task_id)
 	source_path = get_task_path(contest_id, task_id) + '/main.cpp'
@@ -97,17 +109,18 @@ def get_number_of_tasks(contest_url, contest_path, contest_id):
 	return task_number
 
 def make_test(tests, current_id, fd):
+	
 	tests[current_id].click()
 	fd.write(clipboard.paste())
 
 def prepare_tests(task_url, task_path, task_id):
-	print(f'Downloading tests for task {task_id}')
 	tests_path = task_path + '/tests'
 	make_directory(tests_path)
 	
 	driver.get(task_url)
 	tests = driver.find_elements_by_class_name('input-output-copier')
-	assert len(tests) % 2 == 0
+	number_of_tests = int(len(tests) / 2)
+	assert 2 * number_of_tests == len(tests) 
 
 	test_count = int(0)
 	while test_count < len(tests):
@@ -121,10 +134,28 @@ def prepare_tests(task_url, task_path, task_id):
 		make_test(tests, test_count + 1, output_fd)
 
 		test_count += 2
-	
+		print_cf_app()
+
+		if test_count == len(tests):
+			print(f'Downloading test {test_id + 1} / {number_of_tests}...')
+		else:
+			print(f'Downloading test {test_id + 1} / {number_of_tests}...', end = '\r')
+
+
+def move_up(number_of_lines):
+	print('\033[F' * int(number_of_lines), end = '')
 
 def prepare_task(contest_url, contest_path, contest_id, task_id):
-	print(f'Preparing task {task_id}')
+	if task_id == 'A':
+		print_cf_app()
+		print(f'Preparing task {task_id}')
+	else:
+		move_up(1)
+		print(' ' * 40, end = '')
+		move_up(1)
+		print_cf_app()
+		print(f'Preparing task {task_id}')
+
 	task_url = get_task_url(contest_url, task_id)
 	task_path = get_task_path(contest_id, task_id)
 	make_directory(task_path)
@@ -139,10 +170,13 @@ def prepare_task(contest_url, contest_path, contest_id, task_id):
 
 
 def prepare_contest(contest_id):
+	print('')
+	print_cf_app()
 	print('Preparing contest...')
 	contest_url = get_contest_url(contest_id)
 
 	if check_if_page_exists(contest_url) == False:
+		print_cf_app()
 		print('Invalid contest!')
 		return ['', '']
 
@@ -155,7 +189,8 @@ def prepare_contest(contest_id):
 
 def contest_exists(contest_id):
 	if contest_id == '':
-		print('Choose contest first!')
+		print_cf_app()
+		input('Choose contest first!\n[cf-app] Type anything to continue...')
 		return False
 
 	return True
@@ -171,18 +206,25 @@ def valid_task(task_id, number_of_tasks):
 	if task_number <= number_of_tasks and task_number > 0:
 		return True
 
+	print_cf_app()
 	print('Invalid task!')
+	print_cf_app()
+	input('Type anything to continue...')
+
 	return False
 
 def main():
 	display = Display(visible = 0, size = (1360, 760))
 	display.start()
+
+	os.system('clear')
 	
 	global driver
 	driver = get_driver()
+	print_cf_app()
+	print('Accessing https://codeforces.com')
 	driver.get(SITE_URL)
 	login()
-
 
 	contest_url = ''
 	contest_id = ''
@@ -190,6 +232,7 @@ def main():
 
 	while True:
 		os.system('clear')
+		print_cf_app()
 		command = input('Enter: ').split()
 
 		if command[0] == 'quit':
@@ -206,12 +249,19 @@ def main():
 		elif command[0] == 'check':
 			if contest_exists(contest_id) and valid_task(command[1], number_of_tasks):
 				check(contest_id, command[1])
+				print_cf_app()
 				input('Type anything to continue...')
+
+		else:
+			print_cf_app()
+			input('Invalid command!\n[cf-app] Type anything to continue...')
+
 		
 
 	driver.quit()
 	display.stop()
 	os.remove(CURRENT_PATH + '/geckodriver.log')
+	os.system('clear')
 
 
 if __name__ == '__main__':
