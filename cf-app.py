@@ -95,7 +95,10 @@ def submit(contest_url, contest_id, task_id):
 
 	sleep(5)
 
-	get_judge_verdict(task_id)
+	if driver.current_url != contest_url + '/my':
+		something_wrong('Cannot submit same file twice!')
+	else:
+		get_judge_verdict(task_id)
 
 def get_contest_url(contest_id):
 	return SITE_URL + '/contest/' + contest_id
