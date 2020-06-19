@@ -36,12 +36,21 @@ def get_browser():
 
 def get_driver():
 
-	browser = get_from_file('browser')
+	browser = get_from_file('browser').strip('\n')
+	
+	if not browser:
+		# Add code...
+		pass
 	
 	print_cf_app()
-	print('Initializing driver...')
+	print(browser + ' was selected succesfully')
 
-	return webdriver.Firefox()
+	print_cf_app()
+	print('Initializing driver...')
+	
+	if browser == 'Firefox':
+		return webdriver.Firefox()
+	return webdriver.Chrome()
 
 def get_username():
 	return get_from_file('username')
