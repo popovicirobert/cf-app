@@ -63,26 +63,39 @@ def login():
 
 def get_judge_verdict(task_id):
 
+	last_subm = driver.find_elements_by_class_name('highlighted-row')[0]
+	verdict = last_subm.find_elements_by_xpath('.//*')[8]
+	
+	counter = int(0)
 	while True:
-		subm_elem = driver.find_element_by_xpath('/html/body/div[6]/div[4]/div[2]/div[2]/div[6]/table/tbody/tr[2]/td[6]')
-		
-		print_cf_app()
-			
-		if subm_elem.get_attribute('waiting') == 'false':
-			if subm_elem.text == 'Accepted':
-				print(f'Submitting task {task_id}: ' + Colors.GREEN + subm_elem.text + Colors.WHITE + ' ' * 20)
-			else:
-				print(f'Submitting task {task_id}: ' + Colors.RED + subm_elem.text + Colors.WHITE + ' ' * 20)
-			break
+		move_up(1)
+		print(last_subm.text)
+
+		last_subm_text = last_subm.text
+
+		if verdict.get_attribute('waiting') == 'false':
+			move_up(1)
+			print(last_subm.text, end = '\n\n')
+			break	
+
+		if last_subm_text != last_subm.text:
+			counter = 0
 		else:
-			print(f'Submitting task {task_id}: ' + subm_elem.text, end = '\r')
-			
+			counter += 1
+
+		if counter == 1000:
+			driver.refresh()
+			last_subm = driver.find_elements_by_class_name('highlighted-row')[0]
+			verdict = last_subm.find_elements_by_xpath('.//*')[8]
+			counter = 0
+	
 	print_cf_app()
 	input("Type anything to continue...")
 
+
 def submit(contest_url, contest_id, task_id):
 	print_cf_app()
-	print(f'Submitting task {task_id}:', end = '\r')
+	print(f'Submitting task {task_id}:', end = '\n')
 
 	task_url = get_task_url(contest_url, task_id)
 	source_path = get_task_path(contest_id, task_id) + '/main.cpp'
@@ -98,6 +111,7 @@ def submit(contest_url, contest_id, task_id):
 	if driver.current_url != contest_url + '/my':
 		something_wrong('Cannot submit same file twice!')
 	else:
+		print('\n')
 		get_judge_verdict(task_id)
 
 def get_contest_url(contest_id):
@@ -245,7 +259,7 @@ def valid_task(task_id, number_of_tasks):
 
 def main():
 	display = Display(visible = 0, size = (1360, 760))
-	display.start()
+	#display.start()
 
 	os.system('clear')
 	
@@ -287,7 +301,7 @@ def main():
 		
 
 	driver.quit()
-	display.stop()
+	#display.stop()
 	os.remove(CURRENT_PATH + '/geckodriver.log')
 	os.system('clear')
 

@@ -18,9 +18,14 @@ sudo mv geckodriver //usr/bin
 rm geckodriver*
 
 cd cf-app
-chmod +x cf-app.sh
 chmod +x checker.sh
 chmod +x make_main.sh
+
+path=$PWD'/cf-app.sh'
+touch cf-app.sh
+echo -e "#!/bin/bash\n" > $path
+echo "python3 $PWD/cf-app.py "'$PWD' >> $path
+chmod +x cf-app.sh
 
 sudo ln -s $PWD/cf-app.sh //usr/local/bin/cf-app
 cd ..
