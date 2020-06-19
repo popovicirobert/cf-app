@@ -17,6 +17,12 @@ chmod +x geckodriver
 sudo mv geckodriver //usr/bin
 rm geckodriver*
 
+wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+unzip chromedriver_linux64.zip
+chmod +x chromedriver
+sudo mv chromedriver //usr/bin
+rm chromedriver*
+
 cd cf-app
 chmod +x checker.sh
 chmod +x make_main.sh
