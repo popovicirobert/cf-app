@@ -23,42 +23,70 @@ class Colors:
 def print_cf_app():
 	print('[' + Colors.YELLOW + 'cf' + Colors.BLUE + '-' + Colors.RED + 'app' + Colors.WHITE + ']', end = ' ')
 
+def get_from_file(string):
+	fd = open(f'{PROJECT_PATH}/{string}', 'a')
+	fd.close()
+	fd = open(f'{PROJECT_PATH}/{string}', 'r')
+	answer = fd.readline()
+	fd.close()
+	return answer
+
+def get_browser():
+	return get_from_file('browser')
+
 def get_driver():
+
+	browser = get_from_file('browser')
+	
 	print_cf_app()
 	print('Initializing driver...')
-	#return webdriver.Chrome()
+
 	return webdriver.Firefox()
 
 def get_username():
-	fd = open(PROJECT_PATH + '/username')
-	username = fd.readline()
-	fd.close()
-	return username
+	return get_from_file('username')
 
 def get_password():
-	fd = open(PROJECT_PATH + '/password')
-	password = fd.readline()
-	fd.close()
-	return password
+	return get_from_file('password')
 
 def login():
-	print_cf_app()
-	print('Loging in...')
+	log_in_url = 'https://codeforces.com/enter?back=%2F'
 	
-	if check_if_page_exists('https://codeforces.com/enter?back=%2F'):	
+	if check_if_page_exists(log_in_url):	
 
-		username = get_username()
-		password = get_password()
-		# username = ''
-		# password = ''
+		while driver.current_url == log_in_url:
+			os.system('clear')
+			print_cf_app()
+			print('Logging in...')
 
-		driver.find_element_by_name('handleOrEmail').send_keys(username)
-		driver.find_element_by_name('password').send_keys(password)
+			username = get_username()
+			password = get_password()
 
-		driver.find_element_by_name('remember').click()
-		driver.find_element_by_class_name('submit').click()
+			if not username:
+				print_cf_app()
+				username = input('Username: ')
 
-		sleep(5)
+			if not password:
+				print_cf_app()
+				password = input('Password: ')
+			
+			user_elem = driver.find_element_by_name('handleOrEmail')
+			user_elem.clear()
+			user_elem.send_keys(username)
+
+			password_elem = driver.find_element_by_name('password')
+			password_elem.clear()
+			password_elem.send_keys(password)
+
+			driver.find_element_by_name('remember').click()
+			driver.find_element_by_class_name('submit').click()
+
+			sleep(2)
+
+			if driver.current_url == log_in_url:
+				display_message('Log in failed')	
+
+	display_message('Logged in succesfully')
 
 
 def get_judge_verdict(task_id):
@@ -109,7 +137,7 @@ def submit(contest_url, contest_id, task_id):
 	sleep(5)
 
 	if driver.current_url != contest_url + '/my':
-		something_wrong('Cannot submit same file twice!')
+		display_message('Cannot submit same file twice!')
 	else:
 		print('\n')
 		get_judge_verdict(task_id)
@@ -212,7 +240,7 @@ def prepare_task(contest_url, contest_path, contest_id, task_id):
 	os.system('touch ' + task_path + '/' + task_id + '.out')
 
 
-def something_wrong(message):
+def display_message(message):
 	print_cf_app()
 	print(message)
 	print_cf_app()
@@ -226,7 +254,7 @@ def prepare_contest(contest_id):
 	contest_url = get_contest_url(contest_id)
 
 	if check_if_page_exists(contest_url) == False:
-		something_wrong('Invalid contest!')
+		display_message('Invalid contest!')
 		return ['', '']
 
 	contest_path = get_contest_path(contest_id)
@@ -238,7 +266,7 @@ def prepare_contest(contest_id):
 
 def contest_exists(contest_id):
 	if contest_id == '':
-		something_wrong('Choose contest first')
+		display_message('Choose contest first')
 		return False
 
 	return True
@@ -254,7 +282,7 @@ def valid_task(task_id, number_of_tasks):
 	if task_number <= number_of_tasks and task_number > 0:
 		return True
 
-	something_wrong('Invalid task!')	
+	display_message('Invalid task!')	
 	return False
 
 def main():
@@ -297,7 +325,7 @@ def main():
 				input('Type anything to continue...')
 
 		else:
-			something_wrong('Invalid command!')	
+			display_message('Invalid command!')	
 		
 
 	driver.quit()
