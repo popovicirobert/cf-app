@@ -1,11 +1,7 @@
 
 ### This is a command line application that helps you solve problems on codeforces
-
-
-
-
-
-
+<br>
+<br>
 Cf-app documentation:
 
 1) Download the repository and necessary libraries using the install.sh script. This will initialize a directory named cf-app with all necessary files.
