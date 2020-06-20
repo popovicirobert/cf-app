@@ -5,10 +5,10 @@
 
 Cf-app documentation:<br/><br/>
 
-1) Download the repository and necessary libraries using the install.sh script.<br/>
+1) Download the repository and necessary libraries using the install.sh script. This will initialize a directory named cf-app with all necessary files.<br/>
     **chmod +x install.sh**<br/>
     **source install.sh**<br/><br/>
-2) Go in the cf-app directory and add 3 files username, password and browser that contain your codeforces username, password and the webbrowser you want to use(only Firefox and Chrome and currently available).<br/><br/>
+2) Go in the cf-app directory and add 3 files username, password and browser that contain your codeforces username, password and the webbrowser you want to use(only Firefox and Chrome and currently available). This step is optional. If you don't make these files you need to insert the fields each time you start the app.<br/><br/>
 3) To start the application run cf-app.<br/>
     **cf-app**<br/><br/>
 4) Commands:<br/>
