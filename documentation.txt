@@ -1,7 +1,7 @@
 This is the cf-app documentation
 
 1) Download the repository and necessary libraries using the install.sh script(see README.md).
-2) Go in the cf-app directory and add 2 files username and password that contain your codeforces username and password.
+2) 
 3) To start the application run cf-app.
 
 Commands:
