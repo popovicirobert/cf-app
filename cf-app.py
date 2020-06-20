@@ -10,6 +10,7 @@ from pyvirtualdisplay import Display
 
 PROJECT_PATH = os.path.dirname(__file__)
 CURRENT_PATH = sys.argv[1]
+DEBUG_MODE = False
 SITE_URL = 'https://codeforces.com'
 driver = ''
 
@@ -39,9 +40,9 @@ def get_driver():
 	browser = get_from_file('browser').strip('\n')
 	
 	if not browser:
-		# Add code...
-		pass
-	
+		print_cf_app()
+		browser = input('Choose browser(Firefox/Chrome): ')
+
 	print_cf_app()
 	print(browser + ' was selected succesfully')
 
@@ -90,7 +91,7 @@ def login():
 			driver.find_element_by_name('remember').click()
 			driver.find_element_by_class_name('submit').click()
 
-			sleep(2)
+			sleep(5)
 
 			if driver.current_url == log_in_url:
 				display_message('Log in failed')	
@@ -295,8 +296,8 @@ def valid_task(task_id, number_of_tasks):
 	return False
 
 def main():
-	display = Display(visible = 0, size = (1360, 760))
-	#display.start()
+	display = Display(visible = DEBUG_MODE, size = (1360, 760))
+	display.start()
 
 	os.system('clear')
 	
@@ -338,8 +339,9 @@ def main():
 		
 
 	driver.quit()
-	#display.stop()
-	os.remove(CURRENT_PATH + '/geckodriver.log')
+	display.stop()
+	if os.path.isfile(f'{CURRENT_PATH}/geckodriver.log') == True:
+		os.remove(f'{CURRENT_PATH}/geckodriver.log')
 	os.system('clear')
 
 
