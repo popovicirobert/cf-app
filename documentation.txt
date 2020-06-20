@@ -1,11 +1,15 @@
 This is the cf-app documentation
 
 1) Download the repository and necessary libraries using the install.sh script(see README.md).
-2) Go in the cf-app directory and add 2 files username and password that contain your codeforces username and password.
+2) Go in the cf-app directory and add 3 files username, password and browser that contain your codeforces username, password and the 
+   webbrowser you want to use(Firefox and Chrome and currently available).
 3) To start the application run cf-app.
 
 Commands:
 	- contest {contest_name}: initialize a directory with the same name as {contest_name} and prepare the tasks and test samples
 	- check {task_id}: check the task {task_id} and report the verdict on the samples
+	- submit {task_id}: submits main.cpp from directory {task_id} and reports the evaluation result
 	- quit: exit the application
+
+
 
