@@ -10,7 +10,7 @@ This will initialize a directory named cf-app with all necessary files.
 
 ```bash
  chmod +x install.sh
- sudo source install.sh
+ source install.sh
  ```
 
 
