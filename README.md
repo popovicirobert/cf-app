@@ -1,30 +1,31 @@
 
-### This is a command line application that helps you solve problems on codeforces
-<br>
-<br>
-Cf-app documentation:
+# Cf-app
 
-1) Download the repository and necessary libraries using the install.sh script. This will initialize a directory named cf-app with all necessary files.
+CLI that automates the process of testing and submitting problems on www.codeforces.com.
+
+## Installation
+
+Download the repository and necessary libraries using the install.sh script.<br>
+This will initialize a directory named cf-app with all necessary files.
+
+'''bash
+ chmod +x install.sh
+ sudo source install.sh
+ '''
+        
+Go in the cf-app directory and add 3 files username, password and browser that contain your codeforces username, password and the webbrowser you want to use(only Firefox and Chrome and currently available).<br>
+If you don't make these files you need to insert the fields each time you start the app.
 
 
-    **chmod +x install.sh**   
-    **source install.sh**
+## Running the app
+
+To start the application run cf-app.
+
+'''bash
+cf-app
+'''
     
-    
-2) Go in the cf-app directory and add 3 files username, password and browser that contain your codeforces username, password and the webbrowser you want to use(only Firefox and Chrome and currently available). This step is optional. If you don't make these files you need to insert the fields each time you start the app.
-
-
-
-
-3) To start the application run cf-app.
-
-
-    **cf-app**
-    
-    
-    
-    
-4) Commands:
+## Usage
 
     - **contest {contest_name}**: initialize a directory with the same name as {contest_name} and prepare the tasks and test samples(e.g. **contest 900**)
     
