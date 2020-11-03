@@ -1,3 +1,5 @@
+#!/bin/python3
+
 import requests
 from selenium import webdriver 
 from selenium.webdriver.firefox.options import Options 
@@ -102,7 +104,7 @@ def login():
 def get_judge_verdict(task_id):
 
 	last_subm = driver.find_elements_by_class_name('highlighted-row')[0]
-	verdict = last_subm.find_elements_by_xpath('.//*')[8]
+	verdict = last_subm.find_elements_by_xpath('.//*')[9]
 	
 	counter = int(0)
 	while True:
@@ -110,9 +112,10 @@ def get_judge_verdict(task_id):
 		print(last_subm.text)
 
 		last_subm_text = last_subm.text
-
+		#print(last_subm_text, verdict.get_attribute('waiting'), counter)
+		
 		if verdict.get_attribute('waiting') == 'false':
-			move_up(1)
+			#move_up(1)
 			print(last_subm.text, end = '\n\n')
 			break	
 
@@ -121,10 +124,10 @@ def get_judge_verdict(task_id):
 		else:
 			counter += 1
 
-		if counter == 1000:
+		if counter == 50:
 			driver.refresh()
 			last_subm = driver.find_elements_by_class_name('highlighted-row')[0]
-			verdict = last_subm.find_elements_by_xpath('.//*')[8]
+			verdict = last_subm.find_elements_by_xpath('.//*')[9]
 			counter = 0
 	
 	print_cf_app()
@@ -296,8 +299,8 @@ def valid_task(task_id, number_of_tasks):
 	return False
 
 def main():
-	display = Display(visible = DEBUG_MODE, size = (1360, 760))
-	display.start()
+	#display = Display(visible = DEBUG_MODE, size = (1360, 760))
+	#display.start()
 
 	os.system('clear')
 	
@@ -339,7 +342,7 @@ def main():
 		
 
 	driver.quit()
-	display.stop()
+	#display.stop()
 	if os.path.isfile(f'{CURRENT_PATH}/geckodriver.log') == True:
 		os.remove(f'{CURRENT_PATH}/geckodriver.log')
 	os.system('clear')

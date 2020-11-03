@@ -1,7 +1,5 @@
 #!/bin/bash
 
-git clone https://github.com/popovicirobert/cf-app.git
-
 sudo apt-get install -y python3
 sudo apt-get install -y python3-pip
 pip3 install --upgrade setuptools
@@ -23,15 +21,12 @@ chmod +x chromedriver
 sudo mv chromedriver //usr/bin
 rm chromedriver*
 
-cd cf-app
+
 chmod +x checker.sh
 chmod +x make_main.sh
-
-path=$PWD'/cf-app.sh'
-touch cf-app.sh
-echo -e "#!/bin/bash\n" > $path
-echo "python3 $PWD/cf-app.py "'$PWD' >> $path
 chmod +x cf-app.sh
+chmod +x cf-app.py
 
-sudo ln -s $PWD/cf-app.sh //usr/local/bin/cf-app
-cd ..
+echo "export PATH=$PATH:$PWD" >> ~/.bashrc
+
+sudo ln -s $PWD/cf-app.sh /usr/local/bin/cf-app
