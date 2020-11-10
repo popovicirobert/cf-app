@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import requests
 from selenium import webdriver 
 from selenium.webdriver.firefox.options import Options 
@@ -102,7 +104,7 @@ def login():
 def get_judge_verdict(task_id):
 
 	last_subm = driver.find_elements_by_class_name('highlighted-row')[0]
-	verdict = last_subm.find_elements_by_xpath('.//*')[8]
+	verdict = last_subm.find_elements_by_class_name('status-verdict-cell')[0]
 	
 	counter = int(0)
 	while True:
@@ -110,21 +112,22 @@ def get_judge_verdict(task_id):
 		print(last_subm.text)
 
 		last_subm_text = last_subm.text
-
+		#print(last_subm_text, verdict.get_attribute('waiting'), counter)
+		
 		if verdict.get_attribute('waiting') == 'false':
 			move_up(1)
 			print(last_subm.text, end = '\n\n')
-			break	
+			break
 
 		if last_subm_text != last_subm.text:
 			counter = 0
 		else:
 			counter += 1
 
-		if counter == 1000:
+		if counter == 50:
 			driver.refresh()
 			last_subm = driver.find_elements_by_class_name('highlighted-row')[0]
-			verdict = last_subm.find_elements_by_xpath('.//*')[8]
+			verdict = last_subm.find_elements_by_class_name('status-verdict-cell')[0]
 			counter = 0
 	
 	print_cf_app()
@@ -190,18 +193,22 @@ def get_number_of_tasks(contest_url, contest_path, contest_id):
 	return task_number
 
 def make_test(tests, current_id, fd):
-	
-	tests[current_id].click()
-	fd.write(clipboard.paste())
+	fd.write(tests[current_id].text)
 
 def prepare_tests(task_url, task_path, task_id):
 	tests_path = task_path + '/tests'
 	make_directory(tests_path)
 	
 	driver.get(task_url)
-	tests = driver.find_elements_by_class_name('input-output-copier')
-	number_of_tests = int(len(tests) / 2)
-	assert 2 * number_of_tests == len(tests) 
+	inputs = driver.find_elements_by_class_name('input')
+	outputs = driver.find_elements_by_class_name('output')
+	assert len(inputs) == len(outputs)
+	tests = []
+	for index in range(len(inputs)):
+		tests.append(inputs[index].find_elements_by_xpath('.//*')[2])
+		tests.append(outputs[index].find_elements_by_xpath('.//*')[2])
+
+	number_of_tests = int(len(tests) / 2) 
 
 	test_count = int(0)
 	while test_count < len(tests):
