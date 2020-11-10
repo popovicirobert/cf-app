@@ -28,5 +28,6 @@ chmod +x cf-app.sh
 chmod +x cf-app.py
 
 echo "export PATH=$PATH:$PWD" >> ~/.bashrc
+source ~/.bashrc
 
 sudo ln -s $PWD/cf-app.sh /usr/local/bin/cf-app
