@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/python3
 
 import requests
 from selenium import webdriver 
@@ -12,7 +12,7 @@ from pyvirtualdisplay import Display
 
 PROJECT_PATH = os.path.dirname(__file__)
 CURRENT_PATH = sys.argv[1]
-DEBUG_MODE = False
+DEBUG_MODE = True
 SITE_URL = 'https://codeforces.com'
 driver = ''
 
@@ -115,7 +115,7 @@ def get_judge_verdict(task_id):
 		#print(last_subm_text, verdict.get_attribute('waiting'), counter)
 		
 		if verdict.get_attribute('waiting') == 'false':
-			#move_up(1)
+			move_up(1)
 			print(last_subm.text, end = '\n\n')
 			break	
 
@@ -193,18 +193,22 @@ def get_number_of_tasks(contest_url, contest_path, contest_id):
 	return task_number
 
 def make_test(tests, current_id, fd):
-	
-	tests[current_id].click()
-	fd.write(clipboard.paste())
+	fd.write(tests[current_id].text)
 
 def prepare_tests(task_url, task_path, task_id):
 	tests_path = task_path + '/tests'
 	make_directory(tests_path)
 	
 	driver.get(task_url)
-	tests = driver.find_elements_by_class_name('input-output-copier')
-	number_of_tests = int(len(tests) / 2)
-	assert 2 * number_of_tests == len(tests) 
+	inputs = driver.find_elements_by_class_name('input')
+	outputs = driver.find_elements_by_class_name('output')
+	assert len(inputs) == len(outputs)
+	tests = []
+	for index in range(len(inputs)):
+		tests.append(inputs[index].find_elements_by_xpath('.//*')[2])
+		tests.append(outputs[index].find_elements_by_xpath('.//*')[2])
+
+	number_of_tests = int(len(tests) / 2) 
 
 	test_count = int(0)
 	while test_count < len(tests):
@@ -299,8 +303,8 @@ def valid_task(task_id, number_of_tasks):
 	return False
 
 def main():
-	#display = Display(visible = DEBUG_MODE, size = (1360, 760))
-	#display.start()
+	display = Display(visible = DEBUG_MODE, size = (1360, 760))
+	display.start()
 
 	os.system('clear')
 	
@@ -342,7 +346,7 @@ def main():
 		
 
 	driver.quit()
-	#display.stop()
+	display.stop()
 	if os.path.isfile(f'{CURRENT_PATH}/geckodriver.log') == True:
 		os.remove(f'{CURRENT_PATH}/geckodriver.log')
 	os.system('clear')

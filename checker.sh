@@ -51,7 +51,7 @@ while [ -f $tests_path"/input$i.txt" ]; do
 	
 	cp $input $in_file
 
-	timeout 2s $main_exe
+	timeout 5s $main_exe
 
 	print_cf_app
 
