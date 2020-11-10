@@ -12,7 +12,7 @@ from pyvirtualdisplay import Display
 
 PROJECT_PATH = os.path.dirname(__file__)
 CURRENT_PATH = sys.argv[1]
-DEBUG_MODE = True
+DEBUG_MODE = False
 SITE_URL = 'https://codeforces.com'
 driver = ''
 
@@ -104,7 +104,7 @@ def login():
 def get_judge_verdict(task_id):
 
 	last_subm = driver.find_elements_by_class_name('highlighted-row')[0]
-	verdict = last_subm.find_elements_by_xpath('.//*')[9]
+	verdict = last_subm.find_elements_by_class_name('status-verdict-cell')[0]
 	
 	counter = int(0)
 	while True:
@@ -117,7 +117,7 @@ def get_judge_verdict(task_id):
 		if verdict.get_attribute('waiting') == 'false':
 			move_up(1)
 			print(last_subm.text, end = '\n\n')
-			break	
+			break
 
 		if last_subm_text != last_subm.text:
 			counter = 0
@@ -127,7 +127,7 @@ def get_judge_verdict(task_id):
 		if counter == 50:
 			driver.refresh()
 			last_subm = driver.find_elements_by_class_name('highlighted-row')[0]
-			verdict = last_subm.find_elements_by_xpath('.//*')[9]
+			verdict = last_subm.find_elements_by_class_name('status-verdict-cell')[0]
 			counter = 0
 	
 	print_cf_app()
